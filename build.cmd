@@ -88,9 +88,9 @@ rem
 
 pushd angle
 
-call gn gen out/%ARCH% --args="target_cpu=""%ARCH%"" angle_build_all=false is_debug=false angle_has_frame_capture=false angle_enable_gl=false angle_enable_vulkan=false angle_enable_wgpu=false angle_enable_d3d9=false angle_enable_null=false use_siso=false" || exit /b 1
+call gn gen out/%ARCH% --args="target_cpu=""%ARCH%"" angle_build_all=false is_debug=false angle_has_frame_capture=false angle_enable_gl=false angle_enable_vulkan=true angle_enable_wgpu=false angle_enable_d3d9=false angle_enable_null=false use_siso=false" || exit /b 1
 "C:\Program Files\Git\usr\bin\sed.exe" -i.bak -e "s/\/MD/\/MT/" build\config\win\BUILD.gn || exit /b 1
-call autoninja --offline -C out/%ARCH% libEGL libGLESv2 libGLESv1_CM || exit /b 1
+call autoninja --offline -C out/%ARCH% || exit /b 1
 
 popd
 
@@ -103,20 +103,15 @@ mkdir angle-%ARCH%\include
 
 echo %ANGLE_COMMIT% > angle-%ARCH%\commit.txt
 
-copy /y angle\out\%ARCH%\d3dcompiler_47.dll angle-%ARCH%\bin 1>nul 2>nul
 copy /y angle\out\%ARCH%\libEGL.dll         angle-%ARCH%\bin 1>nul 2>nul
-copy /y angle\out\%ARCH%\libGLESv1_CM.dll   angle-%ARCH%\bin 1>nul 2>nul
 copy /y angle\out\%ARCH%\libGLESv2.dll      angle-%ARCH%\bin 1>nul 2>nul
+copy /y angle\out\%ARCH%\vulkan-1.dll       angle-%ARCH%\bin 1>nul 2>nul
 
 copy /y angle\out\%ARCH%\libEGL.dll.lib       angle-%ARCH%\lib 1>nul 2>nul
-copy /y angle\out\%ARCH%\libGLESv1_CM.dll.lib angle-%ARCH%\lib 1>nul 2>nul
 copy /y angle\out\%ARCH%\libGLESv2.dll.lib    angle-%ARCH%\lib 1>nul 2>nul
+copy /y angle\out\%ARCH%\vulkan-1.dll.lib     angle-%ARCH%\lib 1>nul 2>nul
 
-xcopy /D /S /I /Q /Y angle\include\KHR   angle-%ARCH%\include\KHR   1>nul 2>nul
-xcopy /D /S /I /Q /Y angle\include\EGL   angle-%ARCH%\include\EGL   1>nul 2>nul
-xcopy /D /S /I /Q /Y angle\include\GLES  angle-%ARCH%\include\GLES  1>nul 2>nul
-xcopy /D /S /I /Q /Y angle\include\GLES2 angle-%ARCH%\include\GLES2 1>nul 2>nul
-xcopy /D /S /I /Q /Y angle\include\GLES3 angle-%ARCH%\include\GLES3 1>nul 2>nul
+xcopy /D /S /I /Q /Y angle\include   angle-%ARCH%\include   1>nul 2>nul
 
 del /Q /S angle-%ARCH%\include\*.clang-format angle-%ARCH%\include\*.md 1>nul 2>nul
 
