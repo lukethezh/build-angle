@@ -2,15 +2,15 @@
 name: build-angle
 
 on:
-  schedule:
-    - cron: "0 0 * * 0"
+#  schedule:
+#    - cron: "0 0 * * 0"
   push:
     branches:
       - main
 
 jobs:
   info:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     outputs:
       ANGLE_COMMIT: ${{ steps.info.outputs.ANGLE_COMMIT }}
       BUILD_DATE: ${{ steps.info.outputs.BUILD_DATE }}
@@ -22,7 +22,7 @@ jobs:
           echo BUILD_DATE=`date +'%Y-%m-%d'` >> ${GITHUB_OUTPUT}
 
   build:
-    runs-on: windows-2022
+    runs-on: windows-latest
     needs: info
     strategy:
       matrix:
@@ -54,7 +54,7 @@ jobs:
           compression-level: 0
 
   release:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     needs: [info, build]
     permissions:
       contents: write
