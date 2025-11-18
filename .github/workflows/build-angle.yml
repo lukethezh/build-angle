@@ -26,7 +26,8 @@ jobs:
     needs: info
     strategy:
       matrix:
-        arch: [x64, arm64]
+        #arch: [x64, arm64]
+        arch: [x64]
     env:
       ANGLE_COMMIT: ${{ needs.info.outputs.ANGLE_COMMIT }}
       BUILD_DATE: ${{ needs.info.outputs.BUILD_DATE }}
