@@ -59,26 +59,26 @@ if "%ANGLE_COMMIT%" equ "" (
 if not exist angle (
   mkdir angle
   pushd angle
-  call git init .                                                          || exit /b 1
-  call git remote add origin https://chromium.googlesource.com/angle/angle || exit /b 1
+  call fetch angle                                                         || exit /b 1
+  ::call git remote add origin https://chromium.googlesource.com/angle/angle || exit /b 1
   popd
 )
 
 pushd angle
 
-if exist build (
-  pushd build
-  call git reset --hard HEAD
-  popd
-)
+::if exist build (
+::  pushd build
+::  call git reset --hard HEAD
+::  popd
+::)
 
-call git fetch origin %ANGLE_COMMIT% || exit /b 1
-call git checkout --force FETCH_HEAD || exit /b 1
+::call git fetch origin %ANGLE_COMMIT% || exit /b 1
+::call git checkout --force FETCH_HEAD || exit /b 1
 
-python.exe scripts\bootstrap.py || exit /b 1
+::python.exe scripts\bootstrap.py || exit /b 1
 
-"C:\Program Files\Git\usr\bin\sed.exe" -i.bak -e "/'third_party\/catapult'\: /,+3d" -e "/'third_party\/dawn'\: /,+3d" -e "/'third_party\/llvm\/src'\: /,+3d" -e "/'third_party\/SwiftShader'\: /,+3d" -e "/'third_party\/VK-GL-CTS\/src'\: /,+3d" DEPS || exit /b 1
-call gclient sync -f -D -R || exit /b 1
+::"C:\Program Files\Git\usr\bin\sed.exe" -i.bak -e "/'third_party\/catapult'\: /,+3d" -e "/'third_party\/dawn'\: /,+3d" -e "/'third_party\/llvm\/src'\: /,+3d" -e "/'third_party\/SwiftShader'\: /,+3d" -e "/'third_party\/VK-GL-CTS\/src'\: /,+3d" DEPS || exit /b 1
+::call gclient sync -f -D -R || exit /b 1
 
 popd
 
