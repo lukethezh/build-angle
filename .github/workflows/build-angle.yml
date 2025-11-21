@@ -2,12 +2,10 @@
 name: build-angle
 
 on:
-   workflow_dispatch
-#  schedule:
-#    - cron: "0 0 * * 0"
-#  push:
-#    branches:
-#      - main
+  workflow_dispatch:
+  push:
+    branches:
+      - main
 
 jobs:
   info:
@@ -39,8 +37,10 @@ jobs:
 
       #- name: Install Windows SDK v10.0.26100.0
       #  shell: cmd
-      #  run: |
-      #    "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vs_installer.exe" modify --installPath "C:\Program Files\Microsoft Visual Studio\2022\Enterprise" --quiet --force --norestart --add Microsoft.VisualStudio.Component.Windows11SDK.26100
+      #  run: "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vs_installer.exe" modify --installPath "C:\Program Files\Microsoft Visual Studio\2022\Enterprise" --quiet --force --norestart --add Microsoft.VisualStudio.Component.Windows11SDK.26100
+
+      - name: Install WinDbg using winget
+        run: winget install Microsoft.WinDbg
 
       - name: Run Build Script
         id: build
